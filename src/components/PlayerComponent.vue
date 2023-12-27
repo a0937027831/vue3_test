@@ -1,26 +1,36 @@
 <template>
-  <div class="player-info">
+  <div class="player-card">
     <h3>{{ player.name }} (ID: {{ player.id }})</h3>
-    <p>HP: {{ player.hp }}</p>
-    <p>MP: {{ player.mp }}</p>
-    <button @click="handleAttack">Attack</button>
+    <h3>hp : {{ player.hp }} </h3>
+    <h3>mp : {{ player.mp }} </h3>
+    <p>Attack Strategy: {{ attackStrategyName }}</p>
+    <button @click="attack">Attack</button>
   </div>
 </template>
 
 <script setup>
-import { defineProps, inject } from 'vue';
-import { Player } from '@/composables/Player';
+import { computed } from "vue";
 
 const props = defineProps({
-  player: Player,
-  allPlayers: Array
+  player: Object
 });
 
-const handleAttack = () => {
-  props.player.attack(props.allPlayers);
+const emit = defineEmits(['attack']);
+
+const attackStrategyName = computed(() => {
+  return props.player.attackStrategyName; // 假设 attackStrategyName 是 Player 类的一个属性
+});
+
+
+const attack = () => {
+  emit('attack', props.player.id);
 };
 </script>
 
 <style>
-/* CSS 样式 */
+.player-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 </style>
